@@ -23,9 +23,9 @@ export const RepoCard: React.FC<RepoCardProps> = ({ repo }) => {
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group/link inline-flex items-center text-lg font-bold text-gray-900 hover:gradient-text transition-all duration-300 truncate"
+            className="group/link inline-flex items-center text-lg font-bold text-gray-900 hover:gradient-text transition-all duration-300 truncate-1-line"
           >
-            <span className="truncate fold-bold text-xl">{repo.name}</span>
+            <span className=" fold-bold text-xl truncate-1-line">{repo.name}</span>
           </a>
           
           {repo.description && (

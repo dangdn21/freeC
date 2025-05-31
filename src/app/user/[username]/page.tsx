@@ -34,6 +34,8 @@ export default function UserDetailPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      console.log('window.innerHeight', window.innerHeight);
+      // get 100vh
       heightRef.current = window.innerHeight;
     }
   }, []);
@@ -143,20 +145,19 @@ export default function UserDetailPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <button
-        onClick={() => router.back()}
-        className="w-10 h-10 mr-3 p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl group-hover:from-blue-200 group-hover:to-indigo-200 transition-all duration-300 transform group-hover:scale-110"
-      >
-        <svg className="w-full h-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-
+    <div className="space-y-4">
       {/* User Profile */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20 animate-slideUp">
-        <div className="flex flex-col lg:flex-row lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
-          <div className="flex flex-col items-center lg:items-start space-y-4">
+      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-4 border border-white/20 animate-slideUp gap-4 relative flex">
+        <button
+          onClick={() => router.back()}
+          className="w-10 h-10 min-w-10 mr-3 p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl group-hover:from-blue-200 group-hover:to-indigo-200 transition-all duration-300 transform group-hover:scale-110"
+        >
+          <svg className="w-full h-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div className="flex flex-col md:flex-row items-start gap-4 relative">
+          <div className="flex flex-col items-start space-y-4">
             <div className="relative group">
               <div className="w-40 h-40 rounded-3xl overflow-hidden border border-white/20 shadow-2xl">
                 <img
@@ -179,9 +180,9 @@ export default function UserDetailPage() {
             </a>
           </div>
           
-          <div className="flex-1 text-center lg:text-left">
+          <div className="flex-1 text-left">
             <div className="space-y-3">
-              <h1 className="text-4xl lg:text-5xl font-bold gradient-text">
+              <h1 className="text-5xl font-bold gradient-text">
                 {user.name || user.login}
               </h1>
               <p className="text-2xl text-gray-600 font-medium">@{user.login}</p>
@@ -193,8 +194,8 @@ export default function UserDetailPage() {
               </div>
             )}
             
-            <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-600 justify-center lg:justify-start">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-600 justify-start">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
                   { label: 'Public Repositories', value: user.public_repos },
                   { label: 'Followers', value: user.followers },
@@ -252,14 +253,12 @@ export default function UserDetailPage() {
           <VirtualizedRepoList
             repos={repos}
             isLoading={reposLoading}
-            height={heightRef.current - 700}
             itemHeight={180}
             onLoadMore={fetchMoreRepos}
             hasMore={hasMoreRepos}
           />
         )}
 
-        <div ref={targetRef} className="h-10" />
       </div>
     </div>
   );

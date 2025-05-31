@@ -19,26 +19,16 @@ export default function UserDetailPage() {
   const [hasMoreRepos, setHasMoreRepos] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const currentUserNameRef = useRef('');
-  const heightRef = useRef(0);
   
   const router = useRouter();
   const params = useParams();
   const username = params.username as string;
 
-  // Infinite scroll hook
-  const { targetRef, resetFetching } = useInfiniteScroll(
+  const { resetFetching } = useInfiniteScroll(
     () => {
     },
     { threshold: 0.8 }
   );
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      console.log('window.innerHeight', window.innerHeight);
-      // get 100vh
-      heightRef.current = window.innerHeight;
-    }
-  }, []);
 
   useEffect(() => {
     if (currentUserNameRef.current !== username) {
@@ -59,7 +49,7 @@ export default function UserDetailPage() {
 
       const userData = await githubService.searchUser(username);
       setUser(userData);
-      fetchUserRepos();
+      fetchUserRepos(1);
     } catch (err) {
       const apiError = err as ApiError;
       setError(apiError.message);
@@ -70,11 +60,10 @@ export default function UserDetailPage() {
 
   const fetchUserRepos = async (page = 1) => {
     if (page === 1) {
-      setReposLoading(true);
       setRepos([]);
       setCurrentPage(1);
     }
-
+    setReposLoading(true);
     setReposError(null);
 
     try {
@@ -147,7 +136,7 @@ export default function UserDetailPage() {
   return (
     <div className="space-y-4">
       {/* User Profile */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-4 border border-white/20 animate-slideUp gap-4 relative flex">
+      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-4 border border-white/20 animate-slideUp gap-4 relative flex flex-col md:flex-row">
         <button
           onClick={() => router.back()}
           className="w-10 h-10 min-w-10 mr-3 p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl group-hover:from-blue-200 group-hover:to-indigo-200 transition-all duration-300 transform group-hover:scale-110"
@@ -249,7 +238,7 @@ export default function UserDetailPage() {
           </div>
         )}
 
-        {heightRef.current > 0 && !reposError && repos.length > 0 && (
+        {!reposError && repos.length > 0 && (
           <VirtualizedRepoList
             repos={repos}
             isLoading={reposLoading}
@@ -258,7 +247,6 @@ export default function UserDetailPage() {
             hasMore={hasMoreRepos}
           />
         )}
-
       </div>
     </div>
   );

@@ -193,12 +193,12 @@ export default function UserDetailPage() {
                 ].map((stat, index) => (
                   <div
                     key={stat.label}
-                    className="flex flex-col items-center group"
+                    className="flex flex-col items-center group  text-center"
                   >
                     <p className={`text-3xl font-bold`}>
                       {stat.value.toLocaleString()}
                     </p>
-                    <p className="text-sm text-gray-600 font-medium mt-1">{stat.label}</p>
+                    <p className="text-sm text-gray-600 font-medium mt-1 text-center">{stat.label}</p>
                   </div>
                 ))}
               </div>

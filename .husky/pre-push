@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push hooks..."
+
+# Run full test suite
+echo "🧪 Running full test suite..."
+npm run test:ci
+
+# Run build check
+echo "🏗️  Checking build..."
+npm run build
+
+# Run lighthouse audit (if available)
+if command -v lighthouse >/dev/null 2>&1; then
+  echo "🔍 Running Lighthouse audit..."
+  npm run lighthouse:ci
+fi
+
+# Security audit
+echo "🔒 Running security audit..."
+npm audit --audit-level moderate
+
+echo "✅ Pre-push checks passed!"
